@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Char(36)
+  username  String   @unique @db.VarChar(50)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  role      Role     @default(student)
+  courses   Course[] @relation("InstructorCourses")
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+}
+
+model Course {
+  id           String    @id @default(uuid()) @db.Char(36)
+  title        String    @db.VarChar(255)
+  description  String?   @db.Text
+  isPublished  Boolean   @default(false)
+  instructorId String
+  instructor   User      @relation("InstructorCourses", fields: [instructorId], references: [id])
+  lectures     Lecture[]
+  createdAt    DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime  @updatedAt @db.Timestamp(6)
+
+  @@index([instructorId])
+}
+
+model Lecture {
+  id          String   @id @default(uuid()) @db.Char(36)
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  title       String   @db.VarChar(255)
+  topic       String?  @db.VarChar(255)
+  lectureType LectureType @default(Recorded)
+  uploadDate  DateTime @default(now()) @db.Timestamp(6)
+  youtubeUrl  String?  @db.VarChar(500)
+  questions   Json?
+  code        String?  @db.Text
+  description String?  @db.Text
+  order       Int      @default(1)
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @updatedAt @db.Timestamp(6)
+
+  @@index([courseId])
+}
+
+enum Role {
+  student
+  instructor
+  admin
+}
+
+enum LectureType {
+  Live
+  Recorded
+}
+
