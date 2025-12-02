@@ -9,7 +9,8 @@ const { createCourseSchema, updateCourseSchema } = require('../validation/course
 const { createLectureSchema } = require('../validation/lecture');
 
 router.get('/', CourseController.getAllCourses);
-router.post('/', authenticate, authorize('instructor', 'admin'), validate(createCourseSchema), CourseController.createCourse);
+// router.post('/', authenticate, authorize('instructor', 'admin'), validate(createCourseSchema), CourseController.createCourse);
+router.post('/', authenticate, authorize('instructor', 'admin'), CourseController.createCourse);
 router.get('/:id', CourseController.getCourseById);
 router.put('/:id', authenticate, authorize('instructor', 'admin'), validate(updateCourseSchema), CourseController.updateCourse);
 router.delete('/:id', authenticate, authorize('admin'), CourseController.deleteCourse);

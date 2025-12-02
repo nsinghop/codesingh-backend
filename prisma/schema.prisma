@@ -25,6 +25,10 @@ model Course {
   title        String    @db.VarChar(255)
   description  String?   @db.Text
   isPublished  Boolean   @default(false)
+  price        String    @default("0")
+  fakeuser     String      @default("348")
+  coupon       String?
+  discount     String      @default("0")
   instructorId String
   instructor   User      @relation("InstructorCourses", fields: [instructorId], references: [id])
   lectures     Lecture[]
