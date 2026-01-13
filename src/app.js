@@ -16,10 +16,10 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:5174',
-    'https://codesingh.in',
-    'https://www.codesingh.in',
-    'http://codesingh.in',
-    'http://www.codesingh.in',
+    'https://masternow.in',
+    'https://www.masternow.in',
+    'http://masternow.in',
+    'http://www.masternow.in',
     process.env.CORS_ORIGIN
   ].filter(Boolean),
   credentials: true
